@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Freedom Board</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	</head>
+	<body style= "background-color:rgba(0,0,0,.075)">
+		<center>
+			<h1><%= @title %></h1>
+			<div id = "input_post">
+				<form action = "post" method = "POST">
+					<textarea rows="4" cols="50" class="text-primary" placeholder = "Please type your message." name="message" style = "width: 500px; height: 100px"> </textarea><br><br>
+						<input type = "text" class="text-success" placeholder = "Your Name" id = "name"  name="user" style = "height: 45px"> </input>&nbsp
+						<button id = "post" type="submit" class="btn btn-primary">POST</button>
+				</form>
+			</div>
+			<div id = "news_feed">
+				<form action = "search" method = "POST">
+					<input type = "text" class="text-warning" name="search" style = "height: 45px" placeholder = "Search Post" id = "search"> </input>&nbsp
+					<button id = "search_button" type="submit" class="btn btn-primary">Search</button>
+				</form>
+				<div id = "posts">
+					<a><p class="text-warning">Feeds:</p></a>
+					<table>
+						<%if File.exist? "posts.yml"%>
+							<% yml = YAML.load_file("posts.yml") %>
+							<% yml.reverse_each do |key , value| %>
+							<% if key.include?(@search) || value.include?(@search) %>
+								<tr>
+								  <th><%= key%> </th>
+								  <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspMessage : <%= value %></td>
+								</tr>
+							<% end %>
+						<% end %>
+					  <% end %>
+					</table>
+				</div>
+			</div>
+		</center>
+	</body>
+</html>
