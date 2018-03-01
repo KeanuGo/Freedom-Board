@@ -4,38 +4,119 @@
 		<title>Freedom Board</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	</head>
-	<body style= "background-color:rgba(0,0,0,.075)">
+	<style>
+		body {
+			background-color:rgba(0,0,0,.075); 
+			margin-top: 30px;
+			margin-bottom: 30px;
+		}
+
+		h1 {
+			font-size: 50px;
+			font-weight: bold;
+		}
+
+		input {
+			text-indent: 5px;
+		}
+
+		fieldset {
+			background: radial-gradient(ellipse at center, rgb(220,220,220), rgb(220,220,220), rgb(230,230,230), rgb(255,255,255));
+			/*background: linear-gradient(to top, rgb(220,220,220), rgb(255,255,255));*/
+			margin-top: 30px;			
+			box-shadow: 0 0 10px rgb(170,170,170);
+			border: 3px solid rgb(200,200,200);
+			border-radius: 8px;
+			border-width: thin;
+			width: 50%; 
+
+			font-family: calibri;
+			font-size: 15px;
+		}
+
+		table {
+			width: 100%;
+			height: 100px;
+			text-indent: 15px;
+			border-collapse: collapse;
+			border: none;
+			font-family: calibri;
+			font-size: 15px;
+		}
+
+		td {
+			border-bottom: 3px solid rgb(221,221,221);
+			height: 40px;
+		}
+
+		th {
+			text-indent: 30px;
+		}
+
+		textarea {
+			width: 650px; 
+			height: 100px;
+			margin-top: 20px;
+		}
+
+		text {
+			font-size: 20px;
+			font-family: helvetica;
+			align: center;
+		}
+
+		#name {
+			height: 40px;
+		}
+
+		#search {
+			height: 40px; 
+			margin-top: 20px;
+		}
+	</style>
+	<body>
 		<center>
 			<h1><%= @title %></h1>
-			<div id = "input_post">
-				<form action = "post" method = "POST">
-					<textarea rows="4" cols="50" class="text-primary" placeholder = "Please type your message." name="message" style = "width: 500px; height: 100px"> </textarea><br><br>
-						<input type = "text" class="text-success" placeholder = "Your Name" id = "name"  name="user" style = "height: 45px"> </input>&nbsp
-						<button id = "post" type="submit" class="btn btn-primary">POST</button>
-				</form>
-			</div>
-			<div id = "news_feed">
-				<form action = "search" method = "POST">
-					<input type = "text" class="text-warning" name="search" style = "height: 45px" placeholder = "Search Post" id = "search"> </input>&nbsp
-					<button id = "search_button" type="submit" class="btn btn-primary">Search</button>
-				</form>
-				<div id = "posts">
-					<a><p class="text-warning">Feeds:</p></a>
-					<table>
-						<%if File.exist? "posts.yml"%>
-							<% yml = YAML.load_file("posts.yml") %>
-							<% yml.reverse_each do |key , value| %>
-							<% if key.include?(@search) || value.include?(@search) %>
-								<tr>
-								  <th><%= key%> </th>
-								  <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspMessage : <%= value %></td>
-								</tr>
+			<h4><i>"Let it all out."</i></h4>
+			<fieldset>
+				<div id = "input_post">
+					<form action = "post" method = "POST">
+						<textarea rows="4" cols="50" class="text-primary" placeholder = "Please type your message." name="message"> </textarea><br><br>
+							<input type = "text" class="text-success" placeholder = "Your Name" id = "name"  name="user" size = "90"> </input>&nbsp
+							<button id = "post" type="submit" class="btn btn-primary">POST</button>
+					</form>
+				</div><br>
+			</fieldset>
+			<fieldset>
+				<div id = "news_feed">
+					<br><text>Recent Posts</text>
+					<form action = "search" method = "POST">
+						<input type = "text" class="text-warning" name="search" placeholder = "Search Post" id = "search" size = "90"> </input>&nbsp
+						<button id = "search_button" type="submit" class="btn btn-primary">Search</button>
+					</form>
+					<br>
+					<div id = "posts">
+						<table>
+							<%if File.exist? "posts.yml"%>
+								<% yml = YAML.load_file("posts.yml") %>
+								<% yml.reverse_each do |key , value| %>
+								<% if key.include?(@search) || value.include?(@search) %>
+									<% reversed = key.reverse %>
+									<% user = key[0..key.length()-20] %>
+									<% time = reversed[0..19].reverse %>
+									<tr>
+									  <th><%= user%> </th>
+									  <td><%= value %></td>
+									  <td><%= time %></td>
+									</tr>
+								<% end %>
 							<% end %>
-						<% end %>
-					  <% end %>
-					</table>
+						  <% end %>
+						</table>
+					</div>
 				</div>
-			</div>
+				<br>
+			</fieldset>
 		</center>
 	</body>
 </html>
